@@ -6,6 +6,7 @@
 #define GAMECONTEXT_H
 
 #include "ChessBoard.h"
+#include "ChessPiece.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
 class GameContext {
@@ -14,13 +15,23 @@ public:
 
     ~GameContext();
 
+    void StartNewGame();
+
     void Update();
 
     void Render();
 
 private:
+
+    void LoadTextures();
+
     ChessBoard m_board;
     sf::RenderWindow *m_window;
+
+    std::vector<std::unique_ptr<ChessPiece>> m_pieces;
+
+    sf::Texture whitePawnTexture;
+    sf::Texture blackPawnTexture;
 };
 
 #endif //GAMECONTEXT_H

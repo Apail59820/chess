@@ -17,7 +17,7 @@ int main() {
 
         game.Update();
 
-        window.clear(sf::Color::White);
+        window.clear(sf::Color(120, 89, 66));
 
         game.Render();
 

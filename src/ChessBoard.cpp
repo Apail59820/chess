@@ -26,6 +26,9 @@ ChessBoard::ChessBoard() {
     m_sprite.setTexture(m_texture);
     m_borders_sprite.setTexture(m_borders_texture);
 
+    m_sprite.setScale(2.f, 2.f);
+    m_borders_sprite.setScale(2.f, 2.f);
+
     const sf::FloatRect spriteBounds = m_sprite.getLocalBounds();
     m_sprite.setOrigin(spriteBounds.width / 2, spriteBounds.height / 2);
 
