@@ -76,10 +76,15 @@ public:
 
     void SetPosition(const sf::Vector2f position) {
         m_Sprite.setPosition(position);
+        m_position = sf::Vector2i(static_cast<int>(position.x), static_cast<int>(position.y));
     }
 
     void setIsDragged(const bool bState) {
         m_bIsBeingDragged = bState;
+    }
+
+    std::vector<sf::Vector2i> GetLegalMoves() const {
+        return m_availableMoves;
     }
 
 protected:
@@ -92,6 +97,8 @@ protected:
     bool m_bIsBeingDragged = false;
 
     LegalMovesOverlay m_legalMovesOverlay;
+
+    std::vector<sf::Vector2i> m_availableMoves;
 
 private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override = 0;

@@ -31,8 +31,14 @@ public:
 private:
 
     static std::unique_ptr<ChessPiece> CreatePiece(Globals::PieceType type, bool isWhite, const sf::Texture &texture, const sf::Vector2i &position);
+
     void InitializePawnRow(int startX, int startY, bool isWhite, const sf::Texture &texture);
     void InitializeMajorPiecesRow(int startX, int startY, bool isWhite);
+    static sf::Vector2i GetMouseTile(sf::Vector2f mousePos);
+
+    static sf::Vector2f TileToCoords(sf::Vector2i tile);
+
+    static bool isMoveLegal(const sf::Vector2i& targetCell, const std::vector<sf::Vector2i>& legalMoves);
 
     sf::Vector2i m_mouse_pos;
 

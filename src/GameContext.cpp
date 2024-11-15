@@ -4,6 +4,8 @@
 
 #include "../include/GameContext.h"
 
+#include <iostream>
+
 #include "../include/Globals.h"
 #include "../include/ChessPieces/Bishop.h"
 #include "../include/ChessPieces/King.h"
@@ -101,10 +103,19 @@ void GameContext::HandleMouseEvents(const sf::Event &event) {
     }
 
     if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && isDragging) {
-        sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
+        const sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
 
         if (selectedPiece) {
-            selectedPiece->get()->SetPosition(originalDragPosition);
+            const sf::Vector2i targetCell = GetMouseTile(mousePos);
+
+            if (const std::vector<sf::Vector2i> legalMoves = selectedPiece->get()->GetLegalMoves(); isMoveLegal(
+                targetCell, legalMoves)) {
+                const sf::Vector2f newPosition = TileToCoords(targetCell);
+                selectedPiece->get()->SetPosition(newPosition);
+            } else {
+                selectedPiece->get()->SetPosition(originalDragPosition);
+            }
+
             selectedPiece->get()->setIsDragged(false);
         }
 
@@ -154,6 +165,46 @@ bool GameContext::IsPieceOnTile(const sf::Vector2i &targetSquare) const {
         }
     }
     return false;
+}
+
+sf::Vector2i GameContext::GetMouseTile(const sf::Vector2f mousePos) {
+    auto boardPosition = sf::Vector2i(
+        static_cast<int>(ChessBoardSprite->getPosition().x),
+        static_cast<int>(ChessBoardSprite->getPosition().y)
+    );
+
+    boardPosition.x -= static_cast<int>(ChessBoardSprite->getGlobalBounds().width / 2);
+    boardPosition.y -= static_cast<int>(ChessBoardSprite->getGlobalBounds().height / 2);
+
+    const int offsetX = static_cast<int>(mousePos.x) - boardPosition.x;
+    const int offsetY = static_cast<int>(mousePos.y) - boardPosition.y;
+
+    const int tileX = offsetX / 64;
+    const int tileY = offsetY / 64;
+
+
+    return {tileX, tileY};
+}
+
+sf::Vector2f GameContext::TileToCoords(const sf::Vector2i tile) {
+    auto boardPosition = sf::Vector2i(
+        static_cast<int>(ChessBoardSprite->getPosition().x),
+        static_cast<int>(ChessBoardSprite->getPosition().y)
+    );
+
+    boardPosition.x -= static_cast<int>(ChessBoardSprite->getGlobalBounds().width / 2);
+    boardPosition.y -= static_cast<int>(ChessBoardSprite->getGlobalBounds().height / 2);
+
+    boardPosition.x += tile.x * 64;
+    boardPosition.y += tile.y * 64;
+
+    return {static_cast<float>(boardPosition.x), static_cast<float>(boardPosition.y)};
+}
+
+bool GameContext::isMoveLegal(const sf::Vector2i &targetCell, const std::vector<sf::Vector2i> &legalMoves) {
+    return std::any_of(legalMoves.begin(), legalMoves.end(), [&](const sf::Vector2i &move) {
+        return move == targetCell;
+    });
 }
 
 void GameContext::InitializePawnRow(const int startX, int startY, const bool isWhite, const sf::Texture &texture) {

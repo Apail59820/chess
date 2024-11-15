@@ -25,7 +25,7 @@ void Pawn::Update() {
 }
 
 void Pawn::GetAvailableMoves() {
-    if (m_bIsHoverActive) {
+    if (m_bIsHoverActive && !m_bIsBeingDragged) {
         const sf::Vector2i currentTile = GetCurrentTile();
         const int moveDirection = m_bIsWhite ? -1 : 1;
 
@@ -53,6 +53,8 @@ void Pawn::GetAvailableMoves() {
         }
 
         m_legalMovesOverlay.updateLegalMoves(availableMoves);
+        m_availableMoves.clear();
+        m_availableMoves = availableMoves;
     }
 }
 
