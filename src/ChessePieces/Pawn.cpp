@@ -46,7 +46,8 @@ void Pawn::GetAvailableMoves() {
         }
 
         for (int dx = -1; dx <= 1; dx += 2) {
-            if (sf::Vector2i attackTile = currentTile + sf::Vector2i(dx, moveDirection); Context::GlobalContext->get()->IsPieceOnTile(attackTile)) {
+            if (sf::Vector2i attackTile = currentTile + sf::Vector2i(dx, moveDirection); Context::GlobalContext->get()->
+                IsPieceOnTile(attackTile)) {
                 //std::cout << "Capture available on: " << attackTile.x << ", " << attackTile.y << std::endl;
             }
         }
@@ -62,7 +63,9 @@ void Pawn::SetTexture(const sf::Texture &texture) {
 void Pawn::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
     target.draw(m_Sprite, states);
     if (m_bIsHoverActive) {
-        target.draw(m_hoverRectangle, states);
+        if (!m_bIsBeingDragged) {
+            target.draw(m_hoverRectangle, states);
+        }
         target.draw(m_legalMovesOverlay, states);
     }
 }

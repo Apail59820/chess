@@ -44,7 +44,9 @@ void GameContext::Update() {
 
     for (const auto &piece: m_pieces) {
         piece->Update();
-        piece->Hover(m_mouse_pos);
+        if (!isDragging) {
+            piece->Hover(m_mouse_pos);
+        }
     }
 }
 
@@ -92,6 +94,7 @@ void GameContext::HandleMouseEvents(const sf::Event &event) {
                 selectedPiece = &piece;
                 originalDragPosition = selectedPiece->get()->GetPosition();
                 isDragging = true;
+                selectedPiece->get()->setIsDragged(true);
                 break;
             }
         }
@@ -102,6 +105,7 @@ void GameContext::HandleMouseEvents(const sf::Event &event) {
 
         if (selectedPiece) {
             selectedPiece->get()->SetPosition(originalDragPosition);
+            selectedPiece->get()->setIsDragged(false);
         }
 
         selectedPiece = nullptr;

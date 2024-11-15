@@ -78,6 +78,10 @@ public:
         m_Sprite.setPosition(position);
     }
 
+    void setIsDragged(const bool bState) {
+        m_bIsBeingDragged = bState;
+    }
+
 protected:
     sf::Sprite m_Sprite;
     sf::RectangleShape m_hoverRectangle;
@@ -85,6 +89,7 @@ protected:
     sf::Vector2i m_position;
     bool m_bIsWhite = false;
     bool m_bIsHoverActive = false;
+    bool m_bIsBeingDragged = false;
 
     LegalMovesOverlay m_legalMovesOverlay;
 
