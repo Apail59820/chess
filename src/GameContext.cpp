@@ -4,8 +4,6 @@
 
 #include "../include/GameContext.h"
 
-#include <iostream>
-
 #include "../include/Globals.h"
 #include "../include/ChessPieces/Bishop.h"
 #include "../include/ChessPieces/King.h"
@@ -17,7 +15,8 @@
 
 using namespace Globals;
 
-GameContext::GameContext(sf::RenderWindow *window): m_black_timer(sf::seconds(60 * 15)), m_white_timer(sf::seconds(60 * 15)) {
+GameContext::GameContext(sf::RenderWindow *window): m_black_timer(sf::seconds(60 * 15)),
+                                                    m_white_timer(sf::seconds(60 * 15)) {
     m_window = window;
 
     const sf::Vector2u windowSize = window->getSize();
@@ -27,8 +26,10 @@ GameContext::GameContext(sf::RenderWindow *window): m_black_timer(sf::seconds(60
 
     m_textureManager.LoadTextures();
 
-    m_black_timer.SetPosition(sf::Vector2i(static_cast<int>(windowSize.x) / 2 + 245, static_cast<int>(windowSize.y) / 2 - 310));
-    m_white_timer.SetPosition(sf::Vector2i(static_cast<int>(windowSize.x) / 2 + 245, static_cast<int>(windowSize.y) / 2 + 270));
+    m_black_timer.SetPosition(sf::Vector2i(static_cast<int>(windowSize.x) / 2 + 245,
+                                           static_cast<int>(windowSize.y) / 2 - 310));
+    m_white_timer.SetPosition(sf::Vector2i(static_cast<int>(windowSize.x) / 2 + 245,
+                                           static_cast<int>(windowSize.y) / 2 + 270));
 
     StartNewGame();
 }
@@ -41,7 +42,8 @@ void GameContext::Update() {
     m_black_timer.Update();
     m_white_timer.Update();
 
-    for (const auto &piece : m_pieces) {
+    for (const auto &piece: m_pieces) {
+        piece->Update();
         piece->Hover(m_mouse_pos);
     }
 }
@@ -110,6 +112,15 @@ std::unique_ptr<ChessPiece> GameContext::CreatePiece(const PieceType type, bool 
     return piece;
 }
 
+bool GameContext::IsPieceOnTile(const sf::Vector2i &targetSquare) const {
+    for (const auto &piece: m_pieces) {
+        if (sf::Vector2i pieceGridPosition = piece->GetCurrentTile(); pieceGridPosition == targetSquare) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void GameContext::InitializePawnRow(const int startX, int startY, const bool isWhite, const sf::Texture &texture) {
     for (int i = 0; i < 8; i++) {
         m_pieces.push_back(CreatePiece(PAWN, isWhite, texture, {startX + i * 64, startY}));
@@ -121,6 +132,7 @@ void GameContext::InitializeMajorPiecesRow(const int startX, const int startY, c
 
     for (int i = 0; i < 8; ++i) {
         sf::Vector2i position = {startX + i * 64, startY};
-        m_pieces.push_back(CreatePiece(piecesOrder[i], isWhite, m_textureManager.GetTexture(piecesOrder[i], isWhite), position));
+        m_pieces.push_back(CreatePiece(piecesOrder[i], isWhite, m_textureManager.GetTexture(piecesOrder[i], isWhite),
+                                       position));
     }
 }

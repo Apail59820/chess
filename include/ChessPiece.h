@@ -5,14 +5,15 @@
 #ifndef CHESSPIECE_H
 #define CHESSPIECE_H
 
+#include "Globals.h"
+#include "LegalMovesOverlay.h"
 #include "SFML/Graphics/Drawable.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "SFML/Graphics/Sprite.hpp"
-#include "SFML/Graphics/Texture.hpp"
 
 class ChessPiece : public sf::Drawable {
 public:
-    ChessPiece() {
+    ChessPiece() : m_legalMovesOverlay(10.0f) {
         m_hoverRectangle.setSize({64.f, 64.f});
         m_hoverRectangle.setFillColor(sf::Color::Transparent);
         m_hoverRectangle.setOutlineColor(sf::Color::Green);
@@ -30,7 +31,8 @@ public:
     virtual void SetTexture(const sf::Texture &texture) = 0;
 
     void Hover(const sf::Vector2i &mousePosition) {
-        if (const sf::FloatRect bounds = m_Sprite.getGlobalBounds(); bounds.contains(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y))) {
+        if (const sf::FloatRect bounds = m_Sprite.getGlobalBounds(); bounds.contains(
+            static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y))) {
             m_bIsHoverActive = true;
 
             m_hoverRectangle.setPosition(
@@ -45,6 +47,26 @@ public:
         m_bIsWhite = isWhite;
     }
 
+    sf::Vector2i GetCurrentTile() const {
+        auto boardPosition = sf::Vector2i(
+        static_cast<int>(Globals::ChessBoardSprite->getPosition().x),
+        static_cast<int>(Globals::ChessBoardSprite->getPosition().y)
+    );
+
+        boardPosition.x -= static_cast<int>(Globals::ChessBoardSprite->getGlobalBounds().width / 2);
+        boardPosition.y -= static_cast<int>(Globals::ChessBoardSprite->getGlobalBounds().height / 2);
+
+        const int offsetX = m_position.x - boardPosition.x;
+        const int offsetY = m_position.y - boardPosition.y;
+
+        const int tileX = offsetX / 64;
+        const int tileY = offsetY / 64;
+
+
+        return {tileX, tileY};
+    }
+
+
 protected:
     sf::Sprite m_Sprite;
     sf::RectangleShape m_hoverRectangle;
@@ -52,6 +74,9 @@ protected:
     sf::Vector2i m_position;
     bool m_bIsWhite = false;
     bool m_bIsHoverActive = false;
+
+    LegalMovesOverlay m_legalMovesOverlay;
+
 private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override = 0;
 };

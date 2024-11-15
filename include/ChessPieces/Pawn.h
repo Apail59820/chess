@@ -21,6 +21,8 @@ public:
 
 private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
+    bool m_bIsFirstMove;
 };
 
 #endif //PAWN_H

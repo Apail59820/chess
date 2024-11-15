@@ -7,6 +7,7 @@
 #include <iostream>
 #include <ostream>
 
+#include "../include/Globals.h"
 #include "SFML/Graphics/RenderTarget.hpp"
 
 ChessBoard::ChessBoard() {
@@ -34,6 +35,8 @@ ChessBoard::ChessBoard() {
 
     const sf::FloatRect bordersBounds = m_borders_sprite.getLocalBounds();
     m_borders_sprite.setOrigin(bordersBounds.width / 2, bordersBounds.height / 2);
+
+    Globals::ChessBoardSprite = &m_sprite;
 }
 
 ChessBoard::~ChessBoard() = default;

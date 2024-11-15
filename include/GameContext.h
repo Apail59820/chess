@@ -24,6 +24,7 @@ public:
 
     void Render() const;
 
+    bool IsPieceOnTile(const sf::Vector2i &targetSquare) const;
 
 private:
 

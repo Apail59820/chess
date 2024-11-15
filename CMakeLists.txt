@@ -35,7 +35,9 @@ add_executable(main src/main.cpp
         include/TextureManager.h
         src/TextureManager.cpp
         include/Timer.h
-        src/Timer.cpp)
+        src/Timer.cpp
+        include/Context.h
+        include/LegalMovesOverlay.h)
 target_link_libraries(main PRIVATE sfml-graphics)
 target_compile_features(main PRIVATE cxx_std_17)
 
