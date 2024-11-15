@@ -67,7 +67,7 @@ void GameContext::StartNewGame() {
 
 
 
-void GameContext::Render() {
+void GameContext::Render() const {
     m_window->draw(m_board);
 
     for (const auto &piece: m_pieces) {
