@@ -9,6 +9,7 @@
 #include "ChessPiece.h"
 #include "Globals.h"
 #include "TextureManager.h"
+#include "Timer.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
 class GameContext {
@@ -32,6 +33,8 @@ private:
 
     ChessBoard m_board;
     sf::RenderWindow *m_window;
+
+    Timer m_black_timer, m_white_timer;
 
     std::vector<std::unique_ptr<ChessPiece>> m_pieces;
     TextureManager m_textureManager;

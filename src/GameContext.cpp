@@ -17,7 +17,7 @@
 using namespace Globals::PiecesOffsets;
 using namespace Globals;
 
-GameContext::GameContext(sf::RenderWindow *window) {
+GameContext::GameContext(sf::RenderWindow *window): m_black_timer(sf::seconds(60 * 15)), m_white_timer(sf::seconds(60 * 15)) {
     m_window = window;
 
     const sf::Vector2u windowSize = window->getSize();
@@ -26,12 +26,18 @@ GameContext::GameContext(sf::RenderWindow *window) {
 
 
     m_textureManager.LoadTextures();
+
+    m_black_timer.SetPosition(sf::Vector2i(static_cast<int>(windowSize.x) / 2 + 400, static_cast<int>(windowSize.y) / 2 - 200));
+    m_white_timer.SetPosition(sf::Vector2i(static_cast<int>(windowSize.x) / 2 + 400, static_cast<int>(windowSize.y) / 2 + 200));
+
     StartNewGame();
 }
 
 GameContext::~GameContext() = default;
 
 void GameContext::Update() {
+    m_black_timer.Update();
+    m_white_timer.Update();
 }
 
 void GameContext::StartNewGame() {
@@ -53,6 +59,8 @@ void GameContext::StartNewGame() {
 
     InitializeMajorPiecesRow(TopLeftX, TopLeftY + 7 * 64, true);
     InitializeMajorPiecesRow(TopLeftX, TopLeftY, false);
+
+    m_white_timer.Start();
 }
 
 
@@ -62,6 +70,9 @@ void GameContext::Render() const {
     for (const auto &piece: m_pieces) {
         m_window->draw(*piece);
     }
+
+    m_window->draw(m_white_timer);
+    m_window->draw(m_black_timer);
 }
 
 
