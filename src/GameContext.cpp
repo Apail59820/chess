@@ -27,8 +27,8 @@ GameContext::GameContext(sf::RenderWindow *window): m_black_timer(sf::seconds(60
 
     m_textureManager.LoadTextures();
 
-    m_black_timer.SetPosition(sf::Vector2i(static_cast<int>(windowSize.x) / 2 + 400, static_cast<int>(windowSize.y) / 2 - 200));
-    m_white_timer.SetPosition(sf::Vector2i(static_cast<int>(windowSize.x) / 2 + 400, static_cast<int>(windowSize.y) / 2 + 200));
+    m_black_timer.SetPosition(sf::Vector2i(static_cast<int>(windowSize.x) / 2 + 245, static_cast<int>(windowSize.y) / 2 - 310));
+    m_white_timer.SetPosition(sf::Vector2i(static_cast<int>(windowSize.x) / 2 + 245, static_cast<int>(windowSize.y) / 2 + 270));
 
     StartNewGame();
 }
