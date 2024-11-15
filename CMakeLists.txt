@@ -33,7 +33,9 @@ add_executable(main src/main.cpp
         include/ChessPieces/King.h
         src/ChessePieces/King.cpp
         include/TextureManager.h
-        src/TextureManager.cpp)
+        src/TextureManager.cpp
+        include/Timer.h
+        src/Timer.cpp)
 target_link_libraries(main PRIVATE sfml-graphics)
 target_compile_features(main PRIVATE cxx_std_17)
 

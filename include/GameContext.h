@@ -34,7 +34,6 @@ private:
     sf::RenderWindow *m_window;
 
     std::vector<std::unique_ptr<ChessPiece>> m_pieces;
-
     TextureManager m_textureManager;
 };
 
