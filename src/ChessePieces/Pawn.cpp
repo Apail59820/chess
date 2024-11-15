@@ -4,8 +4,6 @@
 
 #include "../../include/ChessPieces/Pawn.h"
 
-#include <ostream>
-
 #include "SFML/Graphics/RenderTarget.hpp"
 
 Pawn::Pawn(const bool white) {

@@ -32,6 +32,21 @@ private:
 
     sf::Texture whitePawnTexture;
     sf::Texture blackPawnTexture;
+
+    sf::Texture whiteRookTexture;
+    sf::Texture blackRookTexture;
+
+    sf::Texture whiteKnightTexture;
+    sf::Texture blackKnightTexture;
+
+    sf::Texture whiteBishopTexture;
+    sf::Texture blackBishopTexture;
+
+    sf::Texture whiteQueenTexture;
+    sf::Texture blackQueenTexture;
+
+    sf::Texture whiteKingTexture;
+    sf::Texture blackKingTexture;
 };
 
 #endif //GAMECONTEXT_H
