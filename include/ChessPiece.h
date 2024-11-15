@@ -49,9 +49,9 @@ public:
 
     sf::Vector2i GetCurrentTile() const {
         auto boardPosition = sf::Vector2i(
-        static_cast<int>(Globals::ChessBoardSprite->getPosition().x),
-        static_cast<int>(Globals::ChessBoardSprite->getPosition().y)
-    );
+            static_cast<int>(Globals::ChessBoardSprite->getPosition().x),
+            static_cast<int>(Globals::ChessBoardSprite->getPosition().y)
+        );
 
         boardPosition.x -= static_cast<int>(Globals::ChessBoardSprite->getGlobalBounds().width / 2);
         boardPosition.y -= static_cast<int>(Globals::ChessBoardSprite->getGlobalBounds().height / 2);
@@ -66,6 +66,17 @@ public:
         return {tileX, tileY};
     }
 
+    sf::FloatRect GetBounds() const {
+        return m_Sprite.getGlobalBounds();
+    }
+
+    sf::Vector2f GetPosition() const {
+        return m_Sprite.getPosition();
+    }
+
+    void SetPosition(const sf::Vector2f position) {
+        m_Sprite.setPosition(position);
+    }
 
 protected:
     sf::Sprite m_Sprite;

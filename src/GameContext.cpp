@@ -83,6 +83,37 @@ void GameContext::Render() const {
     m_window->draw(m_black_timer);
 }
 
+void GameContext::HandleMouseEvents(const sf::Event &event) {
+    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+        const sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
+
+        for (auto &piece: m_pieces) {
+            if (piece->GetBounds().contains(mousePos)) {
+                selectedPiece = &piece;
+                originalDragPosition = selectedPiece->get()->GetPosition();
+                isDragging = true;
+                break;
+            }
+        }
+    }
+
+    if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && isDragging) {
+        sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
+
+        if (selectedPiece) {
+            selectedPiece->get()->SetPosition(originalDragPosition);
+        }
+
+        selectedPiece = nullptr;
+        isDragging = false;
+    }
+
+    if (event.type == sf::Event::MouseMoved && isDragging && selectedPiece) {
+        const sf::Vector2f mousePos(static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y));
+        selectedPiece->get()->SetPosition(sf::Vector2f(mousePos.x - 32.f, mousePos.y - 32.f));
+    }
+}
+
 
 std::unique_ptr<ChessPiece> GameContext::CreatePiece(const PieceType type, bool isWhite, const sf::Texture &texture,
                                                      const sf::Vector2i &position) {

@@ -12,6 +12,7 @@ int main() {
 
     while (window.isOpen()) {
         for (auto event = sf::Event(); window.pollEvent(event);) {
+            game->HandleMouseEvents(event);
             if (event.type == sf::Event::Closed) {
                 window.close();
             }

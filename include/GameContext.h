@@ -24,6 +24,8 @@ public:
 
     void Render() const;
 
+    void HandleMouseEvents(const sf::Event &event);
+
     bool IsPieceOnTile(const sf::Vector2i &targetSquare) const;
 
 private:
@@ -41,6 +43,10 @@ private:
 
     std::vector<std::unique_ptr<ChessPiece>> m_pieces;
     TextureManager m_textureManager;
+
+    sf::Vector2f originalDragPosition;
+    std::unique_ptr<ChessPiece> *selectedPiece = nullptr;
+    bool isDragging = false;
 };
 
 #endif //GAMECONTEXT_H
