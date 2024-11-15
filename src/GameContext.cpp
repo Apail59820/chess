@@ -44,126 +44,13 @@ void GameContext::StartNewGame() {
 
     const int whitePawnsStartY = TopLeftY + 6 * squareSize - PawnOffset;
 
-    // Init White Pawns
-    for (int i = 0; i < 8; i++) {
-        auto newPawn = std::make_unique<Pawn>(true);
-        newPawn->SetTexture(whitePawnTexture);
-
-        const int pawnX = TopLeftX + i * squareSize;
-        newPawn->SetPosition(sf::Vector2i(pawnX, whitePawnsStartY));
-
-        m_pieces.push_back(std::move(newPawn));
-    }
-
     const int blackPawnsStartY = TopLeftY + squareSize - PawnOffset;
 
-    // Init Black Pawns
-    for (int i = 0; i < 8; i++) {
-        auto newPawn = std::make_unique<Pawn>(false);
-        newPawn->SetTexture(blackPawnTexture);
+    InitializePawnRow(TopLeftX, whitePawnsStartY, true, whitePawnTexture);
+    InitializePawnRow(TopLeftX, blackPawnsStartY, false, blackPawnTexture);
 
-        const int pawnX = TopLeftX + i * squareSize;
-        newPawn->SetPosition(sf::Vector2i(pawnX, blackPawnsStartY));
-
-        m_pieces.push_back(std::move(newPawn));
-    }
-
-    auto BlackRookTopLeft = std::make_unique<Rook>(false);
-    BlackRookTopLeft->SetTexture(blackRookTexture);
-    auto BlackRookTopRight = std::make_unique<Rook>(false);
-    BlackRookTopRight->SetTexture(blackRookTexture);
-
-    auto WhiteRookBottomLeft = std::make_unique<Rook>(true);
-    WhiteRookBottomLeft->SetTexture(whiteRookTexture);
-    auto WhiteRookBottomRight = std::make_unique<Rook>(true);
-    WhiteRookBottomRight->SetTexture(whiteRookTexture);
-
-    // Init Rooks
-    BlackRookTopLeft->SetPosition(sf::Vector2i(TopLeftX, TopLeftY));
-    m_pieces.push_back(std::move(BlackRookTopLeft));
-
-    BlackRookTopRight->SetPosition(sf::Vector2i(TopLeftX + 7 * squareSize, TopLeftY));
-    m_pieces.push_back(std::move(BlackRookTopRight));
-
-    WhiteRookBottomLeft->SetPosition(sf::Vector2i(TopLeftX, TopLeftY + squareSize * 7));
-    m_pieces.push_back(std::move(WhiteRookBottomLeft));
-
-    WhiteRookBottomRight->SetPosition(sf::Vector2i(TopLeftX + squareSize * 7, TopLeftY + squareSize * 7));
-    m_pieces.push_back(std::move(WhiteRookBottomRight));
-
-    auto BlackKnightTopLeft = std::make_unique<Knight>(false);
-    BlackKnightTopLeft->SetTexture(blackKnightTexture);
-    auto BlackKnightTopRight = std::make_unique<Knight>(false);
-    BlackKnightTopRight->SetTexture(blackKnightTexture);
-
-    auto WhiteKnightBottomLeft = std::make_unique<Knight>(true);
-    WhiteKnightBottomLeft->SetTexture(whiteKnightTexture);
-    auto WhiteKnightBottomRight = std::make_unique<Knight>(true);
-    WhiteKnightBottomRight->SetTexture(whiteKnightTexture);
-
-    // Init Knights
-
-    BlackKnightTopLeft->SetPosition(sf::Vector2i(TopLeftX + squareSize, TopLeftY - KnightOffset));
-    m_pieces.push_back(std::move(BlackKnightTopLeft));
-
-    BlackKnightTopRight->SetPosition(sf::Vector2i(TopLeftX + 6 * squareSize, TopLeftY - KnightOffset));
-    m_pieces.push_back(std::move(BlackKnightTopRight));
-
-    WhiteKnightBottomLeft->SetPosition(sf::Vector2i(TopLeftX + squareSize, TopLeftY + squareSize * 7 - KnightOffset));
-    m_pieces.push_back(std::move(WhiteKnightBottomLeft));
-
-    WhiteKnightBottomRight->SetPosition(sf::Vector2i(TopLeftX + squareSize * 6,
-                                                     TopLeftY + squareSize * 7 - KnightOffset));
-    m_pieces.push_back(std::move(WhiteKnightBottomRight));
-
-    auto BlackBishopTopLeft = std::make_unique<Bishop>(false);
-    BlackBishopTopLeft->SetTexture(blackBishopTexture);
-    auto BlackBishopTopRight = std::make_unique<Bishop>(false);
-    BlackBishopTopRight->SetTexture(blackBishopTexture);
-
-    auto WhiteBishopBottomLeft = std::make_unique<Bishop>(true);
-    WhiteBishopBottomLeft->SetTexture(whiteBishopTexture);
-    auto WhiteBishopBottomRight = std::make_unique<Bishop>(true);
-    WhiteBishopBottomRight->SetTexture(whiteBishopTexture);
-
-    // Init Bishops
-
-    BlackBishopTopLeft->SetPosition(sf::Vector2i(TopLeftX + squareSize * 2, TopLeftY - BishopOffset));
-    m_pieces.push_back(std::move(BlackBishopTopLeft));
-
-    BlackBishopTopRight->SetPosition(sf::Vector2i(TopLeftX + 5 * squareSize, TopLeftY - BishopOffset));
-    m_pieces.push_back(std::move(BlackBishopTopRight));
-
-    WhiteBishopBottomLeft->SetPosition(
-        sf::Vector2i(TopLeftX + squareSize * 2, TopLeftY + squareSize * 7 - BishopOffset));
-    m_pieces.push_back(std::move(WhiteBishopBottomLeft));
-
-    WhiteBishopBottomRight->SetPosition(sf::Vector2i(TopLeftX + squareSize * 5,
-                                                     TopLeftY + squareSize * 7 - BishopOffset));
-    m_pieces.push_back(std::move(WhiteBishopBottomRight));
-
-    // Init Queens
-    auto BlackQueen = std::make_unique<Queen>(false);
-    BlackQueen->SetTexture(blackQueenTexture);
-    BlackQueen->SetPosition(sf::Vector2i(TopLeftX + squareSize * 3, TopLeftY - QueenOffset));
-    m_pieces.push_back(std::move(BlackQueen));
-
-    auto WhiteQueen = std::make_unique<Queen>(true);
-    WhiteQueen->SetTexture(whiteQueenTexture);
-    WhiteQueen->SetPosition(sf::Vector2i(TopLeftX + squareSize * 3, TopLeftY + squareSize * 7 - QueenOffset));
-    m_pieces.push_back(std::move(WhiteQueen));
-
-    // Init Kings
-    auto BlackKing = std::make_unique<King>(false);
-    BlackKing->SetTexture(blackKingTexture);
-    BlackKing->SetPosition(sf::Vector2i(TopLeftX + squareSize * 4, TopLeftY));
-    m_pieces.push_back(std::move(BlackKing));
-
-    auto WhiteKing = std::make_unique<King>(true);
-    WhiteKing->SetTexture(whiteKingTexture);
-    WhiteKing->SetPosition(sf::Vector2i(TopLeftX + squareSize * 4, TopLeftY + squareSize * 7));
-    m_pieces.push_back(std::move(WhiteKing));
-
+    InitializeMajorPiecesRow(TopLeftX, TopLeftY + 7 * 64, true);
+    InitializeMajorPiecesRow(TopLeftX, TopLeftY, false);
 }
 
 
@@ -206,10 +93,55 @@ void GameContext::LoadTextures() {
     if (!blackQueenTexture.loadFromFile("../../assets/Pieces/QueenBlack.png")) {
         std::cerr << "Error : unable to load QueenBlack.png" << std::endl;
     }
-    if(!blackKingTexture.loadFromFile("../../assets/Pieces/KingBlack.png")) {
+    if (!blackKingTexture.loadFromFile("../../assets/Pieces/KingBlack.png")) {
         std::cerr << "Error : unable to load KingBlack.png" << std::endl;
     }
-    if(!whiteKingTexture.loadFromFile("../../assets/Pieces/KingWhite.png")) {
+    if (!whiteKingTexture.loadFromFile("../../assets/Pieces/KingWhite.png")) {
         std::cerr << "Error : unable to load KingWhite.png" << std::endl;
     }
+}
+
+std::unique_ptr<ChessPiece> GameContext::CreatePiece(const PieceType type, bool isWhite, sf::Texture &texture,
+                                                     const sf::Vector2i &position) {
+    std::unique_ptr<ChessPiece> piece;
+    switch (type) {
+        case PAWN:
+            piece = std::make_unique<Pawn>(isWhite);
+            break;
+        case ROOK:
+            piece = std::make_unique<Rook>(isWhite);
+            break;
+        case KNIGHT:
+            piece = std::make_unique<Knight>(isWhite);
+            break;
+        case BISHOP:
+            piece = std::make_unique<Bishop>(isWhite);
+            break;
+        case QUEEN:
+            piece = std::make_unique<Queen>(isWhite);
+            break;
+        case KING:
+            piece = std::make_unique<King>(isWhite);
+            break;
+    }
+    piece->SetTexture(texture);
+    piece->SetPosition(position);
+    return piece;
+}
+
+void GameContext::InitializePawnRow(const int startX, int startY, const bool isWhite, sf::Texture &texture) {
+    for (int i = 0; i < 8; i++) {
+        m_pieces.push_back(CreatePiece(PAWN, isWhite, texture, {startX + i * 64, startY}));
+    }
+}
+
+void GameContext::InitializeMajorPiecesRow(int startX, int startY, const bool isWhite) {
+    m_pieces.push_back(CreatePiece(ROOK, isWhite, isWhite ? whiteRookTexture : blackRookTexture, {startX, startY}));
+    m_pieces.push_back(CreatePiece(KNIGHT, isWhite, isWhite ? whiteKnightTexture : blackKnightTexture, {startX + 64, startY}));
+    m_pieces.push_back(CreatePiece(BISHOP, isWhite, isWhite ? whiteBishopTexture : blackBishopTexture, {startX + 128, startY}));
+    m_pieces.push_back(CreatePiece(QUEEN, isWhite, isWhite ? whiteQueenTexture : blackQueenTexture, {startX + 192, startY}));
+    m_pieces.push_back(CreatePiece(KING, isWhite, isWhite ? whiteKingTexture : blackKingTexture, {startX + 256, startY}));
+    m_pieces.push_back(CreatePiece(BISHOP, isWhite, isWhite ? whiteBishopTexture : blackBishopTexture, {startX + 320, startY}));
+    m_pieces.push_back(CreatePiece(KNIGHT, isWhite, isWhite ? whiteKnightTexture : blackKnightTexture, {startX + 384, startY}));
+    m_pieces.push_back(CreatePiece(ROOK, isWhite, isWhite ? whiteRookTexture : blackRookTexture, {startX + 448, startY}));
 }

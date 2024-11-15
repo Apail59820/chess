@@ -21,7 +21,14 @@ public:
 
     void Render() const;
 
+
 private:
+
+    enum PieceType {PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING};
+
+    static std::unique_ptr<ChessPiece> CreatePiece(PieceType type, bool isWhite, sf::Texture &texture, const sf::Vector2i &position);
+    void InitializePawnRow(int startX, int startY, bool isWhite, sf::Texture &texture);
+    void InitializeMajorPiecesRow(int startX, int startY, bool isWhite);
 
     void LoadTextures();
 
