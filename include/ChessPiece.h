@@ -21,7 +21,7 @@ public:
 
     virtual void SetPosition(sf::Vector2i position) = 0;
 
-    virtual void SetTexture(sf::Texture& texture) = 0;
+    virtual void SetTexture(const sf::Texture& texture) = 0;
 
     void SetIsWhite(const bool isWhite) {
         m_bIsWhite = isWhite;

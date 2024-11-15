@@ -20,7 +20,7 @@ void Queen::Update() {
 void Queen::GetAvailableMoves() {
 }
 
-void Queen::SetTexture(sf::Texture& texture) {
+void Queen::SetTexture(const sf::Texture& texture) {
     m_Sprite.setTexture(texture);
 }
 

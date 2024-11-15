@@ -19,7 +19,7 @@ void Knight::Update() {
 void Knight::GetAvailableMoves() {
 }
 
-void Knight::SetTexture(sf::Texture& texture) {
+void Knight::SetTexture(const sf::Texture& texture) {
     m_Sprite.setTexture(texture);
 }
 

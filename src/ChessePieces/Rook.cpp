@@ -20,7 +20,7 @@ void Rook::Update() {
 void Rook::GetAvailableMoves() {
 }
 
-void Rook::SetTexture(sf::Texture& texture) {
+void Rook::SetTexture(const sf::Texture& texture) {
     m_Sprite.setTexture(texture);
 }
 

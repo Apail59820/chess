@@ -17,7 +17,7 @@ public:
 
     void SetPosition(sf::Vector2i position) override;
 
-    void SetTexture(sf::Texture &texture) override;
+    void SetTexture(const sf::Texture &texture) override;
 
 private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

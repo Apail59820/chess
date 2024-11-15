@@ -20,7 +20,7 @@ void King::Update() {
 void King::GetAvailableMoves() {
 }
 
-void King::SetTexture(sf::Texture &texture) {
+void King::SetTexture(const sf::Texture &texture) {
     m_Sprite.setTexture(texture);
 }
 

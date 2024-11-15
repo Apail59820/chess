@@ -20,7 +20,7 @@ void Bishop::Update() {
 void Bishop::GetAvailableMoves() {
 }
 
-void Bishop::SetTexture(sf::Texture& texture) {
+void Bishop::SetTexture(const sf::Texture& texture) {
     m_Sprite.setTexture(texture);
 }
 

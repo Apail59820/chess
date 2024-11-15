@@ -12,4 +12,8 @@ namespace Globals::PiecesOffsets {
     constexpr int QueenOffset = 4;
 }
 
+namespace Globals {
+    enum PieceType {PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING};
+}
+
 #endif //GLOBALS_H

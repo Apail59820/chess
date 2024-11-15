@@ -20,7 +20,7 @@ void Pawn::Update() {
 void Pawn::GetAvailableMoves() {
 }
 
-void Pawn::SetTexture(sf::Texture& texture) {
+void Pawn::SetTexture(const sf::Texture& texture) {
     m_Sprite.setTexture(texture);
 }
 
