@@ -112,6 +112,15 @@ void GameContext::HandleMouseEvents(const sf::Event &event) {
                 targetCell, legalMoves)) {
                 const sf::Vector2f newPosition = TileToCoords(targetCell);
                 selectedPiece->get()->SetPosition(newPosition);
+
+                if (whiteTurn) {
+                    m_white_timer.Pause();
+                    m_black_timer.Start();
+                } else {
+                    m_black_timer.Pause();
+                    m_white_timer.Start();
+                }
+                whiteTurn = !whiteTurn;
             } else {
                 selectedPiece->get()->SetPosition(originalDragPosition);
             }

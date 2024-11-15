@@ -53,6 +53,8 @@ private:
     sf::Vector2f originalDragPosition;
     std::unique_ptr<ChessPiece> *selectedPiece = nullptr;
     bool isDragging = false;
+
+    bool whiteTurn = true;
 };
 
 #endif //GAMECONTEXT_H
