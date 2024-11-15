@@ -27,6 +27,8 @@ public:
     void HandleMouseEvents(const sf::Event &event);
 
     bool IsPieceOnTile(const sf::Vector2i &targetSquare) const;
+    bool IsOpponentPiece(sf::Vector2i targetTile, bool isWhite) const;
+    static bool IsWithinBounds(sf::Vector2i targetTile) ;
 
 private:
 

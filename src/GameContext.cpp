@@ -176,6 +176,21 @@ bool GameContext::IsPieceOnTile(const sf::Vector2i &targetSquare) const {
     return false;
 }
 
+bool GameContext::IsOpponentPiece(const sf::Vector2i targetTile, const bool isWhite) const {
+    for (const auto &piece: m_pieces) {
+        if (piece->GetCurrentTile() == targetTile) {
+            return piece->IsWhite() != isWhite;
+        }
+    }
+    return false;
+}
+
+bool GameContext::IsWithinBounds(const sf::Vector2i targetTile) {
+    return 0 <= targetTile.x && targetTile.x < 8 &&
+           (0 <= targetTile.y && targetTile.y < 8);
+}
+
+
 sf::Vector2i GameContext::GetMouseTile(const sf::Vector2f mousePos) {
     auto boardPosition = sf::Vector2i(
         static_cast<int>(ChessBoardSprite->getPosition().x),

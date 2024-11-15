@@ -87,6 +87,10 @@ public:
         return m_availableMoves;
     }
 
+    bool IsWhite() const {
+        return m_bIsWhite;
+    }
+
 protected:
     sf::Sprite m_Sprite;
     sf::RectangleShape m_hoverRectangle;
