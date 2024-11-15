@@ -13,8 +13,8 @@
 #include "../include/ChessPieces/Pawn.h"
 #include "../include/ChessPieces/Queen.h"
 #include "../include/ChessPieces/Rook.h"
+#include "SFML/Window/Mouse.hpp"
 
-using namespace Globals::PiecesOffsets;
 using namespace Globals;
 
 GameContext::GameContext(sf::RenderWindow *window): m_black_timer(sf::seconds(60 * 15)), m_white_timer(sf::seconds(60 * 15)) {
@@ -36,8 +36,14 @@ GameContext::GameContext(sf::RenderWindow *window): m_black_timer(sf::seconds(60
 GameContext::~GameContext() = default;
 
 void GameContext::Update() {
+    m_mouse_pos = sf::Mouse::getPosition(*m_window);
+
     m_black_timer.Update();
     m_white_timer.Update();
+
+    for (const auto &piece : m_pieces) {
+        piece->Hover(m_mouse_pos);
+    }
 }
 
 void GameContext::StartNewGame() {
@@ -49,9 +55,9 @@ void GameContext::StartNewGame() {
     const int TopLeftX = static_cast<int>(boardCenterPosition.x - static_cast<float>(boardSize) / 2);
     const int TopLeftY = static_cast<int>(boardCenterPosition.y - static_cast<float>(boardSize) / 2);
 
-    const int whitePawnsStartY = TopLeftY + 6 * squareSize - PawnOffset;
+    const int whitePawnsStartY = TopLeftY + 6 * squareSize;
 
-    const int blackPawnsStartY = TopLeftY + squareSize - PawnOffset;
+    const int blackPawnsStartY = TopLeftY + squareSize;
 
 
     InitializePawnRow(TopLeftX, whitePawnsStartY, true, m_textureManager.GetTexture(PAWN, true));

@@ -31,6 +31,8 @@ private:
     void InitializePawnRow(int startX, int startY, bool isWhite, const sf::Texture &texture);
     void InitializeMajorPiecesRow(int startX, int startY, bool isWhite);
 
+    sf::Vector2i m_mouse_pos;
+
     ChessBoard m_board;
     sf::RenderWindow *m_window;
 

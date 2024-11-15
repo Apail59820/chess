@@ -26,6 +26,9 @@ void Rook::SetTexture(const sf::Texture& texture) {
 
 void Rook::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
     target.draw(m_Sprite, states);
+    if (m_bIsHoverActive) {
+        target.draw(m_hoverRectangle, states);
+    }
 }
 
 void Rook::SetPosition(const sf::Vector2i position) {
