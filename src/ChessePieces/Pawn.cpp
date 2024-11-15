@@ -33,12 +33,16 @@ void Pawn::GetAvailableMoves() {
 
         if (!Context::GlobalContext) return;
 
+
+        bool clearWay = false;
+
         if (const sf::Vector2i forwardTile = currentTile + sf::Vector2i(0, moveDirection); !Context::GlobalContext->
             get()->IsPieceOnTile(forwardTile)) {
             availableMoves.push_back(forwardTile);
+            clearWay = true;
         }
 
-        if ((m_bIsWhite && currentTile.y == 6) || (!m_bIsWhite && currentTile.y == 1)) {
+        if (((m_bIsWhite && currentTile.y == 6) || (!m_bIsWhite && currentTile.y == 1)) && clearWay) {
             if (const sf::Vector2i doubleForwardTile = currentTile + sf::Vector2i(0, 2 * moveDirection); !
                 Context::GlobalContext->get()->IsPieceOnTile(doubleForwardTile)) {
                 availableMoves.push_back(doubleForwardTile);
