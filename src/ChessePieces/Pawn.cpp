@@ -66,6 +66,11 @@ void Pawn::SetTexture(const sf::Texture &texture) {
     m_Sprite.setTexture(texture);
 }
 
+Globals::PieceType Pawn::GetType() const {
+    return Globals::PAWN;
+}
+
+
 void Pawn::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
     target.draw(m_Sprite, states);
     if (m_bIsHoverActive) {

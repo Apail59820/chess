@@ -53,6 +53,11 @@ void Knight::GetAvailableMoves() {
     }
 }
 
+Globals::PieceType Knight::GetType() const {
+    return Globals::KNIGHT;
+}
+
+
 void Knight::SetTexture(const sf::Texture &texture) {
     m_Sprite.setTexture(texture);
 }

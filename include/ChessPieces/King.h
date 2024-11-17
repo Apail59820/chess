@@ -21,7 +21,16 @@ public:
 
     void SetTexture(const sf::Texture &texture) override;
 
+    void AddCastlingMoves(std::vector<sf::Vector2i> &moves) const;
+
+    Globals::PieceType GetType() const override;
+
 private:
+    bool CanCastle(
+        const sf::Vector2i &kingTile,
+        const sf::Vector2i &rookTile,
+        const std::initializer_list<sf::Vector2i> &pathToCheck) const;
+
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
 

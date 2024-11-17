@@ -65,6 +65,11 @@ void Rook::GetAvailableMoves() {
     }
 }
 
+Globals::PieceType Rook::GetType() const {
+    return Globals::ROOK;
+}
+
+
 void Rook::SetTexture(const sf::Texture &texture) {
     m_Sprite.setTexture(texture);
 }

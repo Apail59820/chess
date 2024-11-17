@@ -65,6 +65,10 @@ void Queen::GetAvailableMoves() {
     }
 }
 
+Globals::PieceType Queen::GetType() const {
+    return Globals::QUEEN;
+}
+
 
 void Queen::SetTexture(const sf::Texture &texture) {
     m_Sprite.setTexture(texture);

@@ -91,6 +91,16 @@ public:
         return m_bIsWhite;
     }
 
+    bool HasMoved() const {
+        return m_bHasMoved;
+    }
+
+    void SetHasMoved() {
+        m_bHasMoved = true;
+    }
+
+    virtual Globals::PieceType GetType() const = 0;
+
 protected:
     sf::Sprite m_Sprite;
     sf::RectangleShape m_hoverRectangle;
@@ -99,6 +109,7 @@ protected:
     bool m_bIsWhite = false;
     bool m_bIsHoverActive = false;
     bool m_bIsBeingDragged = false;
+    bool m_bHasMoved = false;
 
     LegalMovesOverlay m_legalMovesOverlay;
 
@@ -106,6 +117,7 @@ protected:
 
 private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override = 0;
+
 };
 
 #endif //CHESSPIECE_H

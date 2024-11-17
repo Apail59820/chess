@@ -20,8 +20,11 @@ public:
 
     void SetTexture(const sf::Texture &texture) override;
 
+    Globals::PieceType GetType() const override;
+
 private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
 };
 
 #endif //KNIGHT_H

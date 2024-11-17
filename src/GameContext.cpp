@@ -108,10 +108,29 @@ void GameContext::HandleMouseEvents(const sf::Event &event) {
         if (selectedPiece) {
             const sf::Vector2i targetCell = GetMouseTile(mousePos);
 
-            if (const std::vector<sf::Vector2i> legalMoves = selectedPiece->get()->GetLegalMoves(); isMoveLegal(
-                targetCell, legalMoves)) {
+            if (const auto legalMoves = selectedPiece->get()->GetLegalMoves(); isMoveLegal(targetCell, legalMoves)) {
                 const sf::Vector2f newPosition = TileToCoords(targetCell);
                 selectedPiece->get()->SetPosition(newPosition);
+
+                if (selectedPiece->get()->GetType() == KING) {
+                    if (targetCell == sf::Vector2i(6, targetCell.y)) {
+                        if (const auto rook = GetPieceAt({7, targetCell.y});
+                            rook && rook->GetType() == ROOK && !rook->HasMoved()) {
+                            rook->SetPosition(TileToCoords({5, targetCell.y}));
+                        }
+                    }
+
+                    if (targetCell == sf::Vector2i(2, targetCell.y)) {
+                        if (const auto rook = GetPieceAt({0, targetCell.y});
+                            rook && rook->GetType() == ROOK && !rook->HasMoved()) {
+                            rook->SetPosition(TileToCoords({3, targetCell.y}));
+                        }
+                    }
+                }
+
+                if (!selectedPiece->get()->HasMoved()) {
+                    selectedPiece->get()->SetHasMoved();
+                }
 
                 if (whiteTurn) {
                     m_white_timer.Pause();
@@ -134,7 +153,7 @@ void GameContext::HandleMouseEvents(const sf::Event &event) {
 
     if (event.type == sf::Event::MouseMoved && isDragging && selectedPiece) {
         const sf::Vector2f mousePos(static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y));
-        selectedPiece->get()->SetPosition(sf::Vector2f(mousePos.x - 32.f, mousePos.y - 32.f));
+        selectedPiece->get()->SetPosition(sf::Vector2f(mousePos.x - 32.f, mousePos.y - 32.f)); // Déplacement visuel
     }
 }
 
@@ -188,6 +207,36 @@ bool GameContext::IsOpponentPiece(const sf::Vector2i targetTile, const bool isWh
 bool GameContext::IsWithinBounds(const sf::Vector2i targetTile) {
     return 0 <= targetTile.x && targetTile.x < 8 &&
            (0 <= targetTile.y && targetTile.y < 8);
+}
+
+ChessPiece *GameContext::GetPieceAt(const sf::Vector2i &targetTile) const {
+    for (const auto &piece: m_pieces) {
+        if (piece->GetCurrentTile() == targetTile) {
+            return piece.get();
+        }
+    }
+    return nullptr;
+}
+
+bool GameContext::IsTileAttacked(const sf::Vector2i &targetTile, const bool attackerIsWhite) const {
+    for (const auto &piece: m_pieces) {
+        if (piece->IsWhite() == attackerIsWhite) {
+            if (const std::vector<sf::Vector2i> legalMoves = piece->GetLegalMoves(); std::find(legalMoves.begin(),
+                    legalMoves.end(), targetTile) != legalMoves.end()) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+std::unique_ptr<ChessPiece> GameContext::GetKing(const bool white) const {
+    for (auto &piece: m_pieces) {
+        if (const auto king = dynamic_cast<King *>(piece.get()); king && king->IsWhite() == white) {
+            return std::make_unique<King>(*king);
+        }
+    }
+    return nullptr;
 }
 
 

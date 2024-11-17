@@ -30,6 +30,11 @@ public:
     bool IsOpponentPiece(sf::Vector2i targetTile, bool isWhite) const;
     static bool IsWithinBounds(sf::Vector2i targetTile) ;
 
+    ChessPiece* GetPieceAt(const sf::Vector2i& targetTile) const;
+    bool IsTileAttacked(const sf::Vector2i& targetTile, bool attackerIsWhite) const;
+
+    std::unique_ptr<ChessPiece> GetKing(bool white) const;
+
 private:
 
     static std::unique_ptr<ChessPiece> CreatePiece(Globals::PieceType type, bool isWhite, const sf::Texture &texture, const sf::Vector2i &position);

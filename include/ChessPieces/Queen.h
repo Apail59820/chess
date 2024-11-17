@@ -9,16 +9,19 @@
 
 class Queen final : public ChessPiece {
 public:
-
     explicit Queen(bool white);
+
     ~Queen() override;
 
     void Update() override;
+
     void GetAvailableMoves() override;
 
     void SetPosition(sf::Vector2i position) override;
 
     void SetTexture(const sf::Texture &texture) override;
+
+    Globals::PieceType GetType() const override;
 
 private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

@@ -80,3 +80,7 @@ void Bishop::SetPosition(const sf::Vector2i position) {
     m_position = position;
     m_Sprite.setPosition(static_cast<float>(position.x), static_cast<float>(position.y));
 }
+
+Globals::PieceType Bishop::GetType() const {
+    return Globals::BISHOP;
+}
