@@ -4,6 +4,7 @@
 
 #include "../../include/ChessPieces/Queen.h"
 
+#include "../../include/Context.h"
 #include "SFML/Graphics/RenderTarget.hpp"
 
 Queen::Queen(const bool white) {
@@ -15,19 +16,67 @@ Queen::Queen(const bool white) {
 Queen::~Queen() = default;
 
 void Queen::Update() {
+    if (m_bIsHoverActive) {
+        GetAvailableMoves();
+    }
 }
 
 void Queen::GetAvailableMoves() {
+    if (m_bIsHoverActive && !m_bIsBeingDragged) {
+        const sf::Vector2i currentTile = GetCurrentTile();
+
+        std::vector<sf::Vector2i> availableMoves;
+        if (!Context::GlobalContext) return;
+
+        const std::vector<sf::Vector2i> directions = {
+            {1, 0},
+            {-1, 0},
+            {0, 1},
+            {0, -1},
+            {1, 1},
+            {1, -1},
+            {-1, 1},
+            {-1, -1}
+        };
+
+        for (const auto &direction: directions) {
+            sf::Vector2i nextTile = currentTile;
+
+            while (true) {
+                nextTile += direction;
+
+                if (!GameContext::IsWithinBounds(nextTile))
+                    break;
+
+                if (Context::GlobalContext->get()->IsPieceOnTile(nextTile)) {
+                    if (Context::GlobalContext->get()->IsOpponentPiece(nextTile, m_bIsWhite)) {
+                        //availableMoves.push_back(nextTile);
+                    }
+                    break;
+                }
+
+                availableMoves.push_back(nextTile);
+            }
+        }
+
+        m_legalMovesOverlay.updateLegalMoves(availableMoves);
+        m_availableMoves.clear();
+        m_availableMoves = availableMoves;
+    }
 }
 
-void Queen::SetTexture(const sf::Texture& texture) {
+
+void Queen::SetTexture(const sf::Texture &texture) {
     m_Sprite.setTexture(texture);
 }
 
 void Queen::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
     target.draw(m_Sprite, states);
     if (m_bIsHoverActive) {
-        target.draw(m_hoverRectangle, states);
+        if (!m_bIsBeingDragged) {
+            target.draw(m_hoverRectangle, states);
+        }
+        target.draw(m_legalMovesOverlay, states);
     }
 }
 
