@@ -35,6 +35,8 @@ public:
 
     std::unique_ptr<ChessPiece> GetKing(bool white) const;
 
+    sf::RenderWindow* GetWindow() const;
+
     bool IsWhiteTurn() const;
 
 private:

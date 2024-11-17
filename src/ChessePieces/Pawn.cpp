@@ -30,9 +30,9 @@ void Pawn::GetAvailableMoves() {
         const int moveDirection = m_bIsWhite ? -1 : 1;
 
         std::vector<sf::Vector2i> availableMoves;
+        std::vector<sf::Vector2i> attackMoves;
 
         if (!Context::GlobalContext) return;
-
 
         bool clearWay = false;
 
@@ -52,11 +52,16 @@ void Pawn::GetAvailableMoves() {
         for (int dx = -1; dx <= 1; dx += 2) {
             if (sf::Vector2i attackTile = currentTile + sf::Vector2i(dx, moveDirection); Context::GlobalContext->get()->
                 IsPieceOnTile(attackTile)) {
-                //std::cout << "Capture available on: " << attackTile.x << ", " << attackTile.y << std::endl;
+                attackMoves.push_back(attackTile);
             }
         }
 
         m_legalMovesOverlay.updateLegalMoves(availableMoves);
+        m_legalMovesOverlay.updateAttackMoves(attackMoves);
+
+        m_attackMoves.clear();
+        m_attackMoves = attackMoves;
+
         m_availableMoves.clear();
         m_availableMoves = availableMoves;
     }
@@ -73,13 +78,6 @@ Globals::PieceType Pawn::GetType() const {
 
 void Pawn::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
     target.draw(m_Sprite, states);
-    if(m_bIsWhite != Context::GlobalContext->get()->IsWhiteTurn()) return;
-    if (m_bIsHoverActive) {
-        if (!m_bIsBeingDragged) {
-            target.draw(m_hoverRectangle, states);
-        }
-        target.draw(m_legalMovesOverlay, states);
-    }
 }
 
 void Pawn::SetPosition(const sf::Vector2i position) {

@@ -101,6 +101,16 @@ public:
 
     virtual Globals::PieceType GetType() const = 0;
 
+    void DrawOverlay(sf::RenderWindow* window, bool isWhiteTurn) const {
+        if (m_bIsWhite != isWhiteTurn) return;
+        if (m_bIsHoverActive) {
+            if (!m_bIsBeingDragged) {
+                window->draw(m_hoverRectangle);
+            }
+            window->draw(m_legalMovesOverlay);
+        }
+    }
+
 protected:
     sf::Sprite m_Sprite;
     sf::RectangleShape m_hoverRectangle;
@@ -114,10 +124,10 @@ protected:
     LegalMovesOverlay m_legalMovesOverlay;
 
     std::vector<sf::Vector2i> m_availableMoves;
+    std::vector<sf::Vector2i> m_attackMoves;
 
 private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override = 0;
-
 };
 
 #endif //CHESSPIECE_H

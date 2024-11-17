@@ -83,6 +83,10 @@ void GameContext::Render() const {
         m_window->draw(*piece);
     }
 
+    for (const auto &piece: m_pieces) {
+        piece->DrawOverlay(GetWindow(), IsWhiteTurn());
+    }
+
     m_window->draw(m_white_timer);
     m_window->draw(m_black_timer);
 }
@@ -106,7 +110,7 @@ void GameContext::HandleMouseEvents(const sf::Event &event) {
         const sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
 
         if (selectedPiece) {
-            if(selectedPiece->get()->IsWhite() != whiteTurn) return;
+            if (selectedPiece->get()->IsWhite() != whiteTurn) return;
             const sf::Vector2i targetCell = GetMouseTile(mousePos);
 
             if (const auto legalMoves = selectedPiece->get()->GetLegalMoves(); isMoveLegal(targetCell, legalMoves)) {
@@ -238,6 +242,10 @@ std::unique_ptr<ChessPiece> GameContext::GetKing(const bool white) const {
         }
     }
     return nullptr;
+}
+
+sf::RenderWindow *GameContext::GetWindow() const {
+    return m_window;
 }
 
 bool GameContext::IsWhiteTurn() const {
