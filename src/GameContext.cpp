@@ -110,56 +110,95 @@ void GameContext::HandleMouseEvents(const sf::Event &event) {
         const sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
 
         if (selectedPiece) {
-            if (selectedPiece->get()->IsWhite() != whiteTurn) return;
-            const sf::Vector2i targetCell = GetMouseTile(mousePos);
+            if (selectedPiece->get()->IsWhite() != whiteTurn) {
+                resetDragState();
+                return;
+            }
 
-            if (const auto legalMoves = selectedPiece->get()->GetLegalMoves(); isMoveLegal(targetCell, legalMoves)) {
-                const sf::Vector2f newPosition = TileToCoords(targetCell);
-                selectedPiece->get()->SetPosition(newPosition);
-
-                if (selectedPiece->get()->GetType() == KING) {
-                    if (targetCell == sf::Vector2i(6, targetCell.y)) {
-                        if (const auto rook = GetPieceAt({7, targetCell.y});
-                            rook && rook->GetType() == ROOK && !rook->HasMoved()) {
-                            rook->SetPosition(TileToCoords({5, targetCell.y}));
-                        }
-                    }
-
-                    if (targetCell == sf::Vector2i(2, targetCell.y)) {
-                        if (const auto rook = GetPieceAt({0, targetCell.y});
-                            rook && rook->GetType() == ROOK && !rook->HasMoved()) {
-                            rook->SetPosition(TileToCoords({3, targetCell.y}));
-                        }
-                    }
-                }
-
-                if (!selectedPiece->get()->HasMoved()) {
-                    selectedPiece->get()->SetHasMoved();
-                }
-
-                if (whiteTurn) {
-                    m_white_timer.Pause();
-                    m_black_timer.Start();
-                } else {
-                    m_black_timer.Pause();
-                    m_white_timer.Start();
-                }
-                whiteTurn = !whiteTurn;
+            if (const sf::Vector2i targetCell = GetMouseTile(mousePos); IsOpponentPiece(
+                targetCell, selectedPiece->get()->IsWhite())) {
+                capturePiece(targetCell);
+            } else if (const auto legalMoves = selectedPiece->get()->GetLegalMoves();
+                isMoveLegal(targetCell, legalMoves)) {
+                performMove(targetCell);
             } else {
                 selectedPiece->get()->SetPosition(originalDragPosition);
             }
 
-            selectedPiece->get()->setIsDragged(false);
+            resetDragState();
         }
-
-        selectedPiece = nullptr;
-        isDragging = false;
     }
 
     if (event.type == sf::Event::MouseMoved && isDragging && selectedPiece) {
         const sf::Vector2f mousePos(static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y));
-        selectedPiece->get()->SetPosition(sf::Vector2f(mousePos.x - 32.f, mousePos.y - 32.f)); // Déplacement visuel
+        selectedPiece->get()->SetPosition(sf::Vector2f(mousePos.x - 32.f, mousePos.y - 32.f));
     }
+}
+
+void GameContext::capturePiece(const sf::Vector2i &targetCell) {
+    const sf::Vector2f newPosition = TileToCoords(targetCell);
+
+    selectedPiece->get()->SetPosition(newPosition);
+
+    if (!selectedPiece->get()->HasMoved()) {
+        selectedPiece->get()->SetHasMoved();
+    }
+
+    if (const auto targetPiece = GetPieceAt(targetCell)) {
+        if (const auto it = std::find_if(m_pieces.begin(), m_pieces.end(),
+                                         [&targetPiece](const std::unique_ptr<ChessPiece> &piece) {
+                                             return piece.get() == targetPiece;
+                                         });
+            it != m_pieces.end()) {
+            m_pieces.erase(it);
+        }
+    }
+
+    switchTurn();
+}
+
+void GameContext::performMove(const sf::Vector2i &targetCell) {
+    const sf::Vector2f newPosition = TileToCoords(targetCell);
+    selectedPiece->get()->SetPosition(newPosition);
+
+    if (selectedPiece->get()->GetType() == KING) {
+        handleCastling(targetCell);
+    }
+
+    if (!selectedPiece->get()->HasMoved()) {
+        selectedPiece->get()->SetHasMoved();
+    }
+
+    switchTurn();
+}
+
+void GameContext::handleCastling(const sf::Vector2i &targetCell) const {
+    if (targetCell == sf::Vector2i(6, targetCell.y)) {
+        if (const auto rook = GetPieceAt({7, targetCell.y}); rook && rook->GetType() == ROOK && !rook->HasMoved()) {
+            rook->SetPosition(TileToCoords({5, targetCell.y}));
+        }
+    } else if (targetCell == sf::Vector2i(2, targetCell.y)) {
+        if (const auto rook = GetPieceAt({0, targetCell.y}); rook && rook->GetType() == ROOK && !rook->HasMoved()) {
+            rook->SetPosition(TileToCoords({3, targetCell.y}));
+        }
+    }
+}
+
+void GameContext::switchTurn() {
+    if (whiteTurn) {
+        m_white_timer.Pause();
+        m_black_timer.Start();
+    } else {
+        m_black_timer.Pause();
+        m_white_timer.Start();
+    }
+    whiteTurn = !whiteTurn;
+}
+
+void GameContext::resetDragState() {
+    selectedPiece->get()->setIsDragged(false);
+    selectedPiece = nullptr;
+    isDragging = false;
 }
 
 

@@ -52,7 +52,9 @@ void Pawn::GetAvailableMoves() {
         for (int dx = -1; dx <= 1; dx += 2) {
             if (sf::Vector2i attackTile = currentTile + sf::Vector2i(dx, moveDirection); Context::GlobalContext->get()->
                 IsPieceOnTile(attackTile)) {
-                attackMoves.push_back(attackTile);
+                if (Context::GlobalContext->get()->IsOpponentPiece(attackTile, m_bIsWhite)) {
+                    attackMoves.push_back(attackTile);
+                }
             }
         }
 

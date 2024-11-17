@@ -26,6 +26,12 @@ public:
 
     void HandleMouseEvents(const sf::Event &event);
 
+    void capturePiece(const sf::Vector2i &targetCell);
+    void performMove(const sf::Vector2i &targetCell);
+    void handleCastling(const sf::Vector2i &targetCell) const;
+    void switchTurn();
+    void resetDragState();
+
     bool IsPieceOnTile(const sf::Vector2i &targetSquare) const;
     bool IsOpponentPiece(sf::Vector2i targetTile, bool isWhite) const;
     static bool IsWithinBounds(sf::Vector2i targetTile) ;
