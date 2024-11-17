@@ -35,6 +35,8 @@ public:
 
     std::unique_ptr<ChessPiece> GetKing(bool white) const;
 
+    bool IsWhiteTurn() const;
+
 private:
 
     static std::unique_ptr<ChessPiece> CreatePiece(Globals::PieceType type, bool isWhite, const sf::Texture &texture, const sf::Vector2i &position);

@@ -46,7 +46,7 @@ void GameContext::Update() {
 
     for (const auto &piece: m_pieces) {
         piece->Update();
-        if (!isDragging) {
+        if (!isDragging && piece->IsWhite() == whiteTurn) {
             piece->Hover(m_mouse_pos);
         }
     }
@@ -92,7 +92,7 @@ void GameContext::HandleMouseEvents(const sf::Event &event) {
         const sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
 
         for (auto &piece: m_pieces) {
-            if (piece->GetBounds().contains(mousePos)) {
+            if (piece->GetBounds().contains(mousePos) && piece->IsWhite() == whiteTurn) {
                 selectedPiece = &piece;
                 originalDragPosition = selectedPiece->get()->GetPosition();
                 isDragging = true;
@@ -106,6 +106,7 @@ void GameContext::HandleMouseEvents(const sf::Event &event) {
         const sf::Vector2f mousePos(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
 
         if (selectedPiece) {
+            if(selectedPiece->get()->IsWhite() != whiteTurn) return;
             const sf::Vector2i targetCell = GetMouseTile(mousePos);
 
             if (const auto legalMoves = selectedPiece->get()->GetLegalMoves(); isMoveLegal(targetCell, legalMoves)) {
@@ -237,6 +238,10 @@ std::unique_ptr<ChessPiece> GameContext::GetKing(const bool white) const {
         }
     }
     return nullptr;
+}
+
+bool GameContext::IsWhiteTurn() const {
+    return whiteTurn;
 }
 
 

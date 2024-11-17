@@ -76,6 +76,7 @@ void Queen::SetTexture(const sf::Texture &texture) {
 
 void Queen::draw(sf::RenderTarget &target, const sf::RenderStates states) const {
     target.draw(m_Sprite, states);
+    if(m_bIsWhite != Context::GlobalContext->get()->IsWhiteTurn()) return;
     if (m_bIsHoverActive) {
         if (!m_bIsBeingDragged) {
             target.draw(m_hoverRectangle, states);
