@@ -28,6 +28,7 @@ void Knight::GetAvailableMoves() {
         const sf::Vector2i currentTile = GetCurrentTile();
 
         std::vector<sf::Vector2i> availableMoves;
+        std::vector<sf::Vector2i> attackMoves;
 
         if (!Context::GlobalContext) return;
 
@@ -42,7 +43,7 @@ void Knight::GetAvailableMoves() {
                 (!Context::GlobalContext->get()->IsPieceOnTile(targetTile) ||
                  Context::GlobalContext->get()->IsOpponentPiece(targetTile, m_bIsWhite))) {
                 if (Context::GlobalContext->get()->IsOpponentPiece(targetTile, m_bIsWhite)) {
-                    //std::cout << "Capture available on: " << attackTile.x << ", " << attackTile.y << std::endl;
+                    attackMoves.push_back(targetTile);
                 } else {
                     availableMoves.push_back(targetTile);
                 }
@@ -50,8 +51,13 @@ void Knight::GetAvailableMoves() {
         }
 
         m_legalMovesOverlay.updateLegalMoves(availableMoves);
+        m_legalMovesOverlay.updateAttackMoves(attackMoves);
+
         m_availableMoves.clear();
         m_availableMoves = availableMoves;
+
+        m_attackMoves.clear();
+        m_attackMoves = attackMoves;
     }
 }
 
