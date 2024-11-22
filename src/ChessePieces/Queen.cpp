@@ -27,7 +27,10 @@ void Queen::GetAvailableMoves() {
     if (m_bIsHoverActive && !m_bIsBeingDragged) {
         const sf::Vector2i currentTile = GetCurrentTile();
 
+
         std::vector<sf::Vector2i> availableMoves;
+        std::vector<sf::Vector2i> attackMoves;
+
         if (!Context::GlobalContext) return;
 
         const std::vector<sf::Vector2i> directions = {
@@ -52,7 +55,7 @@ void Queen::GetAvailableMoves() {
 
                 if (Context::GlobalContext->get()->IsPieceOnTile(nextTile)) {
                     if (Context::GlobalContext->get()->IsOpponentPiece(nextTile, m_bIsWhite)) {
-                        //availableMoves.push_back(nextTile);
+                        attackMoves.push_back(nextTile);
                     }
                     break;
                 }
@@ -62,8 +65,13 @@ void Queen::GetAvailableMoves() {
         }
 
         m_legalMovesOverlay.updateLegalMoves(availableMoves);
+        m_legalMovesOverlay.updateAttackMoves(attackMoves);
+
         m_availableMoves.clear();
         m_availableMoves = availableMoves;
+
+        m_attackMoves.clear();
+        m_attackMoves = attackMoves;
     }
 }
 
