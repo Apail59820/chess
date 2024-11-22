@@ -30,6 +30,8 @@ public:
 
     virtual void SetTexture(const sf::Texture &texture) = 0;
 
+    virtual void DebugLog() = 0;
+
     void Hover(const sf::Vector2i &mousePosition) {
         if (const sf::FloatRect bounds = m_Sprite.getGlobalBounds(); bounds.contains(
             static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y))) {

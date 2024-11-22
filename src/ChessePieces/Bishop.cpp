@@ -4,6 +4,8 @@
 
 #include "../../include/ChessPieces/Bishop.h"
 
+#include <iostream>
+
 #include "../../include/Context.h"
 #include "SFML/Graphics/RenderTarget.hpp"
 
@@ -59,6 +61,14 @@ void Bishop::GetAvailableMoves() {
         m_availableMoves.clear();
         m_availableMoves = availableMoves;
     }
+}
+
+void Bishop::DebugLog() {
+    std::cout << "Bishop::DebugLog()" << std::endl;
+    std::cout << "Type : Bishop" << std::endl;
+    std::cout << "Position : x=" << GetPosition().x << ", y=" << GetPosition().y << std::endl;
+    std::cout << "Is white : " << (m_bIsWhite ? "yes" : "no") << std::endl;
+    std::cout << "Tile : x=" << GetCurrentTile().x << ", y=" << GetCurrentTile().y << std::endl;
 }
 
 

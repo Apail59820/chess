@@ -4,6 +4,8 @@
 
 #include "../../include/ChessPieces/King.h"
 
+#include <iostream>
+
 #include "../../include/Context.h"
 #include "SFML/Graphics/RenderTarget.hpp"
 
@@ -48,6 +50,14 @@ void King::GetAvailableMoves() {
         m_availableMoves.clear();
         m_availableMoves = availableMoves;
     }
+}
+
+void King::DebugLog() {
+    std::cout << "King::DebugLog()" << std::endl;
+    std::cout << "Type : King" << std::endl;
+    std::cout << "Position : x=" << GetPosition().x << ", y=" << GetPosition().y << std::endl;
+    std::cout << "Is white : " << (m_bIsWhite ? "yes" : "no") << std::endl;
+    std::cout << "Tile : x=" << GetCurrentTile().x << ", y=" << GetCurrentTile().y << std::endl;
 }
 
 

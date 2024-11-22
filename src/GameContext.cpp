@@ -138,20 +138,22 @@ void GameContext::HandleMouseEvents(const sf::Event &event) {
 void GameContext::capturePiece(const sf::Vector2i &targetCell) {
     const sf::Vector2f newPosition = TileToCoords(targetCell);
 
-    selectedPiece->get()->SetPosition(newPosition);
-
-    if (!selectedPiece->get()->HasMoved()) {
-        selectedPiece->get()->SetHasMoved();
-    }
+    ChessPiece* currentSelectedPiece = selectedPiece->get();
 
     if (const auto targetPiece = GetPieceAt(targetCell)) {
         if (const auto it = std::find_if(m_pieces.begin(), m_pieces.end(),
-                                         [&targetPiece](const std::unique_ptr<ChessPiece> &piece) {
+                                         [&](const std::unique_ptr<ChessPiece> &piece) {
                                              return piece.get() == targetPiece;
                                          });
             it != m_pieces.end()) {
             m_pieces.erase(it);
-        }
+            }
+    }
+
+    currentSelectedPiece->SetPosition(newPosition);
+
+    if (!currentSelectedPiece->HasMoved()) {
+        currentSelectedPiece->SetHasMoved();
     }
 
     switchTurn();
@@ -255,7 +257,7 @@ bool GameContext::IsWithinBounds(const sf::Vector2i targetTile) {
 
 ChessPiece *GameContext::GetPieceAt(const sf::Vector2i &targetTile) const {
     for (const auto &piece: m_pieces) {
-        if (piece->GetCurrentTile() == targetTile) {
+        if (const auto pieceTile = piece->GetCurrentTile(); pieceTile == targetTile) {
             return piece.get();
         }
     }

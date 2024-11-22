@@ -69,6 +69,15 @@ void Pawn::GetAvailableMoves() {
     }
 }
 
+void Pawn::DebugLog() {
+    std::cout << "Pawn::DebugLog()" << std::endl;
+    std::cout << "Type : Pawn" << std::endl;
+    std::cout << "Position : x=" << GetPosition().x << ", y=" << GetPosition().y << std::endl;
+    std::cout << "Is white : " << (m_bIsWhite ? "yes" : "no") << std::endl;
+    std::cout << "Tile : x=" << GetCurrentTile().x << ", y=" << GetCurrentTile().y << std::endl;
+}
+
+
 void Pawn::SetTexture(const sf::Texture &texture) {
     m_Sprite.setTexture(texture);
 }

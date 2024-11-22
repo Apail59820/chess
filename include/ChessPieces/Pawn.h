@@ -21,6 +21,8 @@ public:
 
     Globals::PieceType GetType() const override;
 
+    void DebugLog() override;
+
 private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 

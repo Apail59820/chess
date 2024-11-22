@@ -20,6 +20,8 @@ public:
 
     void SetTexture(const sf::Texture &texture) override;
 
+    void DebugLog() override;
+
     Globals::PieceType GetType() const override;
 
 private:

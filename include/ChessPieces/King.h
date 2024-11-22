@@ -23,6 +23,8 @@ public:
 
     void AddCastlingMoves(std::vector<sf::Vector2i> &moves) const;
 
+    void DebugLog() override;
+
     Globals::PieceType GetType() const override;
 
 private:

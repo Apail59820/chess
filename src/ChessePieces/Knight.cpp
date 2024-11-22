@@ -4,6 +4,8 @@
 
 #include "../../include/ChessPieces/Knight.h"
 
+#include <iostream>
+
 #include "../../include/Context.h"
 #include "SFML/Graphics/RenderTarget.hpp"
 
@@ -51,6 +53,14 @@ void Knight::GetAvailableMoves() {
         m_availableMoves.clear();
         m_availableMoves = availableMoves;
     }
+}
+
+void Knight::DebugLog() {
+    std::cout << "Knight::DebugLog()" << std::endl;
+    std::cout << "Type : Knight" << std::endl;
+    std::cout << "Position : x=" << GetPosition().x << ", y=" << GetPosition().y << std::endl;
+    std::cout << "Is white : " << (m_bIsWhite ? "yes" : "no") << std::endl;
+    std::cout << "Tile : x=" << GetCurrentTile().x << ", y=" << GetCurrentTile().y << std::endl;
 }
 
 Globals::PieceType Knight::GetType() const {

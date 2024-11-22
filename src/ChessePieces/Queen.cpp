@@ -4,6 +4,8 @@
 
 #include "../../include/ChessPieces/Queen.h"
 
+#include <iostream>
+
 #include "../../include/Context.h"
 #include "SFML/Graphics/RenderTarget.hpp"
 
@@ -67,6 +69,14 @@ void Queen::GetAvailableMoves() {
 
 Globals::PieceType Queen::GetType() const {
     return Globals::QUEEN;
+}
+
+void Queen::DebugLog() {
+    std::cout << "Queen::DebugLog()" << std::endl;
+    std::cout << "Type : Queen" << std::endl;
+    std::cout << "Position : x=" << GetPosition().x << ", y=" << GetPosition().y << std::endl;
+    std::cout << "Is white : " << (m_bIsWhite ? "yes" : "no") << std::endl;
+    std::cout << "Tile : x=" << GetCurrentTile().x << ", y=" << GetCurrentTile().y << std::endl;
 }
 
 
